@@ -2,7 +2,8 @@ package ru.hogwarts.school.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.hogwarts.school.entity.Student;
+import ru.hogwarts.school.record.FacultyRecord;
+import ru.hogwarts.school.record.StudentRecord;
 import ru.hogwarts.school.service.StudentService;
 
 import java.util.Collection;
@@ -18,20 +19,20 @@ public class StudentController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Student> getStudentInfo(@PathVariable Long id) {
-        Student student = studentService.findStudent(id);
-        return ResponseEntity.ok(student);
+    public ResponseEntity<StudentRecord> getStudentInfo(@PathVariable Long id) {
+        StudentRecord studentRecord = studentService.findStudent(id);
+        return ResponseEntity.ok(studentRecord);
     }
 
     @PostMapping
-    public Student createStudent(@RequestBody Student student) {
-        return studentService.addStudent(student);
+    public StudentRecord createStudent(@RequestBody StudentRecord studentRecord) {
+        return studentService.addStudent(studentRecord);
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Student> editStudent(@PathVariable Long id,
-                                               @RequestBody Student student) {
-        Student foundStudent = studentService.editStudent(id, student);
+    public ResponseEntity<StudentRecord> editStudent(@PathVariable Long id,
+                                                     @RequestBody StudentRecord studentRecord) {
+        StudentRecord foundStudent = studentService.editStudent(id, studentRecord);
         return ResponseEntity.ok(foundStudent);
     }
 
@@ -42,7 +43,18 @@ public class StudentController {
     }
 
     @GetMapping(params = "age")
-    public ResponseEntity<Collection<Student>> findStudents(@RequestParam int age) {
+    public ResponseEntity<Collection<StudentRecord>> findStudents(@RequestParam int age) {
         return ResponseEntity.ok(studentService.findByAge(age));
+    }
+
+    @GetMapping("/between")
+    public ResponseEntity<Collection<StudentRecord>> findStudents(@RequestParam int min,
+                                                                  @RequestParam int max) {
+        return ResponseEntity.ok(studentService.findByAgeBetween(min, max));
+    }
+
+    @GetMapping("/faculty/{id}")
+    public ResponseEntity<FacultyRecord> findStudents(@PathVariable long id) {
+        return ResponseEntity.ok(studentService.getStudentFaculty(id));
     }
 }
