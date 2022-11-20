@@ -1,8 +1,10 @@
 package ru.hogwarts.school.component;
 
 import org.springframework.stereotype.Component;
+import ru.hogwarts.school.entity.Avatar;
 import ru.hogwarts.school.entity.Faculty;
 import ru.hogwarts.school.entity.Student;
+import ru.hogwarts.school.record.AvatarRecord;
 import ru.hogwarts.school.record.FacultyRecord;
 import ru.hogwarts.school.record.StudentRecord;
 
@@ -26,6 +28,14 @@ public class RecordMapper {
         facultyRecord.setName(faculty.getName());
         facultyRecord.setColor(faculty.getColor());
         return facultyRecord;
+    }
+
+    public AvatarRecord toRecord(Avatar avatar) {
+        AvatarRecord avatarRecord = new AvatarRecord();
+        avatarRecord.setId(avatar.getId());
+        avatarRecord.setMediaType(avatar.getMediaType());
+        avatarRecord.setUrl("http://localhost:8080/avatar/" + avatar.getId() + "/from-db");
+        return avatarRecord;
     }
 
     public Student toEntity(StudentRecord studentRecord) {
