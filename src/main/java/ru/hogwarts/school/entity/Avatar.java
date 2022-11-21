@@ -16,7 +16,7 @@ public class Avatar {
     private String filePath, mediaType;
     private long fileSize;
     @Lob
-    @Type(type="org.hibernate.type.BinaryType")
+    @Type(type = "org.hibernate.type.BinaryType")
     private byte[] data;
     @OneToOne
     private Student student;

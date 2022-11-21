@@ -19,9 +19,9 @@ public class AvatarController {
         this.avatarService = avatarService;
     }
 
-    @PostMapping
-    public AvatarRecord create(@RequestParam MultipartFile avatar,
-                               @RequestParam long studentId) throws IOException {
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public AvatarRecord addAvatar(@RequestParam MultipartFile avatar,
+                                  @RequestParam long studentId) throws IOException {
         return avatarService.addAvatar(avatar, studentId);
     }
 

@@ -23,7 +23,7 @@ public class AvatarService {
     private final AvatarRepository avatarRepository;
     private final StudentRepository studentRepository;
     private final RecordMapper recordMapper;
-    @Value("${application.avatar.store}$")
+    @Value("${path.avatar.dir}$")
     private String avatarDir;
 
     public AvatarService(AvatarRepository avatarRepository,
