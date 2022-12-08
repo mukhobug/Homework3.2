@@ -101,4 +101,23 @@ public class StudentService {
                 .map(recordMapper::toRecord)
                 .collect(Collectors.toList());
     }
+
+    public Collection<String> getStudentsStartsWith(String letter) {
+        logger.info("was invoking method getStudentsStartsWith");
+        return studentRepository.findAll().stream()
+                .parallel()
+                .filter(s -> s.getName().startsWith(letter))
+                .map(s -> s.getName().toUpperCase())
+                .sorted()
+                .collect(Collectors.toList());
+    }
+
+    public Double getStudentsAverageAgeByStream() {
+        logger.info("was invoking method getStudentsAverageAgeByStream");
+        return studentRepository.findAll().stream()
+                .parallel()
+                .mapToDouble(Student::getAge)
+                .average()
+                .orElse(0);
+    }
 }
