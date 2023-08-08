@@ -1,7 +1,9 @@
 package ru.hogwarts.school.service;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,5 +71,22 @@ public class FacultyService {
         return facultyRepository.findById(id).orElseThrow(FacultyNotFoundException::new).getStudents().stream()
                 .map(recordMapper::toRecord)
                 .collect(Collectors.toList());
+    }
+
+    public String getMaxLengthName() {
+        logger.info("was invoking method getMaxLengthName");
+        return facultyRepository.findAll().stream()
+                .parallel()
+                .map(Faculty::getName)
+                .max(Comparator.comparingInt(String::length))
+                .orElse("");
+    }
+
+    public Integer getIntValue() {
+        logger.info("was invoking method getIntValue");
+        return Stream.iterate(1, a -> a + 1)
+                .limit(1_000_000)
+                .parallel()
+                .reduce(0, Integer::sum);
     }
 }
