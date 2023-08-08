@@ -7,9 +7,15 @@ import ru.hogwarts.school.entity.Student;
 import ru.hogwarts.school.record.AvatarRecord;
 import ru.hogwarts.school.record.FacultyRecord;
 import ru.hogwarts.school.record.StudentRecord;
+import ru.hogwarts.school.repository.FacultyRepository;
 
 @Component
 public class RecordMapper {
+    private final FacultyRepository facultyRepository;
+
+    public RecordMapper(FacultyRepository facultyRepository) {
+        this.facultyRepository = facultyRepository;
+    }
 
     public StudentRecord toRecord(Student student) {
         StudentRecord studentRecord = new StudentRecord();
@@ -17,7 +23,7 @@ public class RecordMapper {
         studentRecord.setName(student.getName());
         studentRecord.setAge(student.getAge());
         if (student.getFaculty() != null) {
-            studentRecord.setFaculty(toRecord(student.getFaculty()));
+            studentRecord.setFacultyRecord(toRecord(student.getFaculty()));
         }
         return studentRecord;
     }
@@ -40,18 +46,16 @@ public class RecordMapper {
 
     public Student toEntity(StudentRecord studentRecord) {
         Student student = new Student();
-        student.setId(studentRecord.getId());
         student.setName(studentRecord.getName());
         student.setAge(studentRecord.getAge());
-        if (studentRecord.getFaculty() != null) {
-            student.setFaculty(toEntity(studentRecord.getFaculty()));
+        if (studentRecord.getFacultyRecord() != null) {
+            student.setFaculty(facultyRepository.findById(studentRecord.getFacultyRecord().getId()).orElse(null));
         }
         return student;
     }
 
     public Faculty toEntity(FacultyRecord facultyRecord) {
         Faculty faculty = new Faculty();
-        faculty.setId(facultyRecord.getId());
         faculty.setName(facultyRecord.getName());
         faculty.setColor(facultyRecord.getColor());
         return faculty;

@@ -5,14 +5,14 @@ public class StudentRecord {
     private String name;
     private int age;
 
-    private FacultyRecord faculty;
+    private FacultyRecord facultyRecord;
 
-    public FacultyRecord getFaculty() {
-        return faculty;
+    public FacultyRecord getFacultyRecord() {
+        return facultyRecord;
     }
 
-    public void setFaculty(FacultyRecord faculty) {
-        this.faculty = faculty;
+    public void setFacultyRecord(FacultyRecord facultyRecord) {
+        this.facultyRecord = facultyRecord;
     }
 
     public Long getId() {

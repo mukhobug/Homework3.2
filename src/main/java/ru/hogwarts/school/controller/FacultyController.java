@@ -18,22 +18,20 @@ public class FacultyController {
         this.facultyService = facultyService;
     }
 
-    @GetMapping("{id}")
-    public ResponseEntity<FacultyRecord> getFacultyInfo(@PathVariable Long id) {
-        FacultyRecord facultyRecord = facultyService.findFaculty(id);
-        return ResponseEntity.ok(facultyRecord);
-    }
-
     @PostMapping
-    public FacultyRecord createFaculty(@RequestBody FacultyRecord facultyRecord) {
+    public FacultyRecord addFaculty(@RequestBody FacultyRecord facultyRecord) {
         return facultyService.addFaculty(facultyRecord);
     }
 
-    @PutMapping("{id}")
-    public ResponseEntity<FacultyRecord> editFaculty(@PathVariable Long id,
-                                                     @RequestBody FacultyRecord facultyRecord) {
-        FacultyRecord foundFaculty = facultyService.editFaculty(id, facultyRecord);
-        return ResponseEntity.ok(foundFaculty);
+    @GetMapping("{id}")
+    public ResponseEntity<FacultyRecord> getFaculty(@PathVariable Long id) {
+        FacultyRecord facultyRecord = facultyService.getFaculty(id);
+        return ResponseEntity.ok(facultyRecord);
+    }
+
+    @PutMapping
+    public ResponseEntity<FacultyRecord> setFaculty(@RequestBody FacultyRecord facultyRecord) {
+        return ResponseEntity.ok(facultyService.setFaculty(facultyRecord));
     }
 
     @DeleteMapping("{id}")
@@ -43,12 +41,12 @@ public class FacultyController {
     }
 
     @GetMapping(params = "colorOrName")
-    public ResponseEntity<Collection<FacultyRecord>> findFacultiesByColorOrName(@RequestParam String colorOrName) {
-        return ResponseEntity.ok(facultyService.findByColorIgnoreCaseOrNameIgnoreCase(colorOrName));
+    public ResponseEntity<Collection<FacultyRecord>> getFacultiesByColorOrName(@RequestParam String colorOrName) {
+        return ResponseEntity.ok(facultyService.getByColorOrName(colorOrName));
     }
 
     @GetMapping("/{id}/students")
-    public ResponseEntity<Collection<StudentRecord>> findStudentsByFaculty(@PathVariable long id) {
-        return ResponseEntity.ok(facultyService.getAllStudents(id));
+    public ResponseEntity<Collection<StudentRecord>> getStudentsByFaculty(@PathVariable long id) {
+        return ResponseEntity.ok(facultyService.getStudentsByFacultyId(id));
     }
 }

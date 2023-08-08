@@ -28,12 +28,12 @@ public class FacultyService {
         return recordMapper.toRecord(facultyRepository.save(recordMapper.toEntity(facultyRecord)));
     }
 
-    public FacultyRecord findFaculty(long id) {
+    public FacultyRecord getFaculty(long id) {
         return recordMapper.toRecord(facultyRepository.findById(id).orElseThrow(FacultyNotFoundException::new));
     }
 
-    public FacultyRecord editFaculty(long id, FacultyRecord facultyRecord) {
-        Faculty temp = facultyRepository.findById(id).orElseThrow(FacultyNotFoundException::new);
+    public FacultyRecord setFaculty(FacultyRecord facultyRecord) {
+        Faculty temp = facultyRepository.findById(facultyRecord.getId()).orElseThrow(FacultyNotFoundException::new);
         temp.setName(facultyRecord.getName());
         temp.setColor(facultyRecord.getColor());
         return recordMapper.toRecord(facultyRepository.save(temp));
@@ -45,13 +45,13 @@ public class FacultyService {
         return recordMapper.toRecord(faculty);
     }
 
-    public Collection<FacultyRecord> findByColorIgnoreCaseOrNameIgnoreCase(String colorOrName) {
+    public Collection<FacultyRecord> getByColorOrName(String colorOrName) {
         return facultyRepository.findByColorIgnoreCaseOrNameIgnoreCase(colorOrName, colorOrName).stream()
                 .map(recordMapper::toRecord)
                 .collect(Collectors.toList());
     }
 
-    public Collection<StudentRecord> getAllStudents(long id) {
+    public Collection<StudentRecord> getStudentsByFacultyId(long id) {
         return facultyRepository.findById(id).orElseThrow(FacultyNotFoundException::new).getStudents().stream()
                 .map(recordMapper::toRecord)
                 .collect(Collectors.toList());

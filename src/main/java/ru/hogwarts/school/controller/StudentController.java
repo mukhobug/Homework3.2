@@ -14,26 +14,26 @@ public class StudentController {
 
     private final StudentService studentService;
 
+
     public StudentController(StudentService studentService) {
         this.studentService = studentService;
     }
 
-    @GetMapping("{id}")
-    public ResponseEntity<StudentRecord> getStudentInfo(@PathVariable Long id) {
-        StudentRecord studentRecord = studentService.findStudent(id);
-        return ResponseEntity.ok(studentRecord);
-    }
-
     @PostMapping
-    public StudentRecord createStudent(@RequestBody StudentRecord studentRecord) {
+    public StudentRecord addStudent(@RequestBody StudentRecord studentRecord) {
         return studentService.addStudent(studentRecord);
     }
 
-    @PutMapping("{id}")
-    public ResponseEntity<StudentRecord> editStudent(@PathVariable Long id,
-                                                     @RequestBody StudentRecord studentRecord) {
-        StudentRecord foundStudent = studentService.editStudent(id, studentRecord);
+    @PutMapping
+    public ResponseEntity<StudentRecord> setStudent(@RequestBody StudentRecord studentRecord) {
+        StudentRecord foundStudent = studentService.setStudent(studentRecord);
         return ResponseEntity.ok(foundStudent);
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<StudentRecord> getStudent(@PathVariable Long id) {
+        StudentRecord studentRecord = studentService.getStudent(id);
+        return ResponseEntity.ok(studentRecord);
     }
 
     @DeleteMapping("{id}")
@@ -43,18 +43,18 @@ public class StudentController {
     }
 
     @GetMapping(params = "age")
-    public ResponseEntity<Collection<StudentRecord>> findStudentsByAge(@RequestParam int age) {
-        return ResponseEntity.ok(studentService.findByAge(age));
+    public ResponseEntity<Collection<StudentRecord>> getStudentsByAge(@RequestParam int age) {
+        return ResponseEntity.ok(studentService.getStudentsByAge(age));
     }
 
     @GetMapping(params = {"min", "max"})
-    public ResponseEntity<Collection<StudentRecord>> findStudentsByAgeBetween(@RequestParam("min") int min,
-                                                                              @RequestParam("max") int max) {
-        return ResponseEntity.ok(studentService.findByAgeBetween(min, max));
+    public ResponseEntity<Collection<StudentRecord>> getStudentsByAgeBetween(@RequestParam("min") int min,
+                                                                             @RequestParam("max") int max) {
+        return ResponseEntity.ok(studentService.getStudentsByAgeBetween(min, max));
     }
 
     @GetMapping("/{id}/faculty")
-    public ResponseEntity<FacultyRecord> getStudentFaculty(@PathVariable long id) {
-        return ResponseEntity.ok(studentService.getStudentFaculty(id));
+    public ResponseEntity<FacultyRecord> getFacultyByStudentId(@PathVariable long id) {
+        return ResponseEntity.ok(studentService.getFacultyByStudentId(id));
     }
 }
