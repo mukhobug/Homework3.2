@@ -1,10 +1,12 @@
 package ru.hogwarts.school.service;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.component.RecordMapper;
 import ru.hogwarts.school.exception.FacultyNotFoundException;
@@ -119,5 +121,36 @@ public class StudentService {
                 .mapToDouble(Student::getAge)
                 .average()
                 .orElse(0);
+    }
+
+    public void multiThreadMethod() {
+        logger.debug("was invoking method multiThreadMethodNameList");
+        List<Student> list = studentRepository.findAll(PageRequest.of(0, 6)).getContent();
+
+        logger.info(list.get(0).getName());
+        logger.info(list.get(1).getName());
+
+        new Thread(() -> {
+            logger.info(list.get(2).getName());
+            logger.info(list.get(3).getName());
+        }).start();
+
+        new Thread(() -> {
+            logger.info(list.get(4).getName());
+            logger.info(list.get(5).getName());
+        }).start();
+    }
+
+    public void multiThreadMethodSync() {
+        logger.debug("was invoking method multiThreadMethodNameListSync");
+        List<Student> list = studentRepository.findAll(PageRequest.of(0, 6)).getContent();
+
+        printNames(list.subList(0, 2));
+        new Thread(() -> printNames(list.subList(2, 4))).start();
+        new Thread(() -> printNames(list.subList(4, 6))).start();
+    }
+
+    private synchronized void printNames(List<Student> students) {
+        students.forEach(s -> logger.info(s.getName()));
     }
 }
