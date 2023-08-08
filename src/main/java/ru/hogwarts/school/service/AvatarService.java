@@ -1,6 +1,7 @@
 package ru.hogwarts.school.service;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,7 +17,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collection;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class AvatarService {
@@ -60,5 +63,12 @@ public class AvatarService {
     public Pair<byte[], String> readFromDb(long id) {
         Avatar avatar = avatarRepository.findById(id).orElseThrow(AvatarNotFoundException::new);
         return Pair.of(avatar.getData(), avatar.getMediaType());
+    }
+
+    public Collection<AvatarRecord> getAllByPage(int pageNumber, int pageSize) {
+        PageRequest pageRequest = PageRequest.of(pageNumber - 1, pageSize);
+        return avatarRepository.findAll(pageRequest).getContent().stream()
+                .map(recordMapper::toRecord)
+                .collect(Collectors.toList());
     }
 }
