@@ -18,7 +18,8 @@ public class FacultyService {
 
     private final RecordMapper recordMapper;
 
-    public FacultyService(FacultyRepository facultyRepository, RecordMapper recordMapper) {
+    public FacultyService(FacultyRepository facultyRepository,
+                          RecordMapper recordMapper) {
         this.facultyRepository = facultyRepository;
         this.recordMapper = recordMapper;
     }
@@ -44,8 +45,8 @@ public class FacultyService {
         return recordMapper.toRecord(faculty);
     }
 
-    public Collection<FacultyRecord> findByColorOrNameIgnoreCase(String colorOrName) {
-        return facultyRepository.findByColorOrNameIgnoreCase(colorOrName, colorOrName).stream()
+    public Collection<FacultyRecord> findByColorIgnoreCaseOrNameIgnoreCase(String colorOrName) {
+        return facultyRepository.findByColorIgnoreCaseOrNameIgnoreCase(colorOrName, colorOrName).stream()
                 .map(recordMapper::toRecord)
                 .collect(Collectors.toList());
     }
